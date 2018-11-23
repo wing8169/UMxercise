@@ -4,7 +4,11 @@ import { db } from "./firebase";
 export const doCreateUser = (id, username, email) =>
   db.ref(`users/${id}`).set({
     username,
-    email
+    email,
+    profile: "1.png"
   });
+// to-do: change profile icon
 
 export const onceGetUsers = () => db.ref("users").once("value");
+
+export const onceGetUser = id => db.ref(`users/%{id}`).once("value");

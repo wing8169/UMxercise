@@ -9,9 +9,9 @@ const withAuthorization = (authCondition, reverse) => Component => {
   class WithAuthorization extends React.Component {
     componentDidMount() {
       firebase.auth.onAuthStateChanged(authUser => {
-        if (reverse && authCondition(authUser))
+        if (reverse && authCondition(authUser)) {
           this.props.history.push(routes.HOME);
-        else if (!reverse && !authCondition(authUser)) {
+        } else if (!reverse && !authCondition(authUser)) {
           this.props.history.push(routes.LANDING);
         }
       });

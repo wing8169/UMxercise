@@ -8,6 +8,7 @@ import SignOutButton from "./SignOut";
 import * as routes from "../constants/routes";
 
 import logo from "./img/logotransparent.png";
+import profile1 from "./img/profile/1.png";
 import ListItem from "@material-ui/core/ListItem";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -77,6 +78,14 @@ class ResponsiveDrawer extends React.Component {
         <div className={classes.toolbar} />
         <div style={{ textAlign: "center" }}>
           <img src={logo} alt="UMxercise" style={{ width: "200px" }} />
+        </div>
+        <Divider />
+        <div style={{ textAlign: "center" }}>
+          <img
+            src={profile1}
+            alt="profile"
+            style={{ width: "150px", borderRadius: "50%", margin: "10px" }}
+          />
         </div>
         <Divider />
         <List>
