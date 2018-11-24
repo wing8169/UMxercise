@@ -80,11 +80,15 @@ class ResponsiveDrawer extends React.Component {
           <img src={logo} alt="UMxercise" style={{ width: "200px" }} />
         </div>
         <Divider />
-        <div style={{ textAlign: "center" }}>
+        <div
+          style={{
+            textAlign: "center"
+          }}
+        >
           <img
             src={profile1}
             alt="profile"
-            style={{ width: "150px", borderRadius: "50%", margin: "10px" }}
+            style={{ width: "150px", borderRadius: "50%", margin: "15px" }}
           />
         </div>
         <Divider />

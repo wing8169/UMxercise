@@ -41,12 +41,6 @@ Vue.prototype.$joined = new Vue({
   }
 });
 
-Vue.prototype.$loggedIn = new Vue({
-  data: {
-    state: false
-  }
-});
-
 Vue.component("joined", {
   // props: ["activity", "place", "time", "no"],
   template: `
