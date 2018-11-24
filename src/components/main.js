@@ -1,14 +1,11 @@
 var sports = [];
 
-function check() {
-  var date = new Date();
-  var milliseconds = date.getTime();
-  for (var i = 0; i < sports.length; i++) {
-    if (new Date(sports[i].time).getTime() < milliseconds) {
-      sports.splice(i, 1);
-    }
+checkIfExpired = sports => {
+  if (new Date(sports.time).getTime() < new Date().getTime()) {
+    return false;
   }
-}
+  return true;
+};
 
 Vue.prototype.$activeUser = new Vue({
   data: {

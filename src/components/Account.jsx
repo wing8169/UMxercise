@@ -13,10 +13,6 @@ class AccountPage extends Component {
     super(props);
     this.state = { uid: "", userData: {} };
   }
-
-  handleDrawerToggle = () => {
-    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
-  };
   componentDidMount() {
     if (firebase.auth.currentUser !== null) {
       this.setState({ uid: firebase.auth.currentUser.uid });
