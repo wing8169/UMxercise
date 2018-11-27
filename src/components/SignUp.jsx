@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import { auth, db } from "../firebase";
 import * as routes from "../constants/routes";
@@ -90,7 +90,7 @@ class SignUpForm extends Component {
             </DialogContentText>
             <TextField
               type="text"
-              style={{ marginTop: 15 }}
+              style={{ marginTop: 20 }}
               value={username}
               onChange={event =>
                 this.setState(byPropKey("username", event.target.value))
@@ -100,7 +100,7 @@ class SignUpForm extends Component {
             />
             <TextField
               type="text"
-              style={{ marginTop: 15 }}
+              style={{ marginTop: 20 }}
               fullWidth
               value={email}
               onChange={event =>
@@ -110,7 +110,7 @@ class SignUpForm extends Component {
             />
             <TextField
               type="password"
-              style={{ marginTop: 15 }}
+              style={{ marginTop: 20 }}
               fullWidth
               value={passwordOne}
               onChange={event =>
@@ -120,7 +120,7 @@ class SignUpForm extends Component {
             />
             <TextField
               type="password"
-              style={{ marginTop: 15 }}
+              style={{ marginTop: 20 }}
               fullWidth
               value={passwordTwo}
               onChange={event =>

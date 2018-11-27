@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
-import Modal from "@material-ui/core/Modal";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -11,6 +10,12 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import sportsLogo from "./img/sports/1.jpg";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
 // Activity Card
 const styles = {
   card: {
@@ -19,17 +24,6 @@ const styles = {
   },
   media: {
     height: 140
-  },
-  paper: {
-    position: "absolute",
-    width: "30%",
-    padding: "50px",
-    height: "30%", //500
-    backgroundColor: "white",
-    boxShadow: "0 8px 6px -6px black",
-    top: "30%",
-    left: "33%",
-    overflow: "scroll"
   }
 };
 
@@ -157,23 +151,23 @@ class ActivityCard extends Component {
     }
     return (
       <div>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
+        <Dialog
           open={this.state.open}
           onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
         >
-          <div className={classes.paper}>
-            <Typography variant="h6" id="modal-title">
-              Joined Members
-            </Typography>
+          <DialogTitle id="form-dialog-title">Joined Members</DialogTitle>
+          <DialogContent>
             {this.props.activity.members.map((item, index) => (
-              <Typography variant="subtitle1" id={index}>
-                {item}
-              </Typography>
+              <DialogContentText>{item}</DialogContentText>
             ))}
-          </div>
-        </Modal>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Card className={classes.card}>
           <CardActionArea>
             <CardMedia

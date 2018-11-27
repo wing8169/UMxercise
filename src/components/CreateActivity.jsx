@@ -68,7 +68,7 @@ export default class CreateActivity extends Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.props.handleClose} color="primary">
+            <Button onClick={this.props.handleClose} color="primary">
               Cancel
             </Button>
             <Button
