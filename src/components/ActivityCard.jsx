@@ -144,7 +144,11 @@ class ActivityCard extends Component {
       );
     else {
       button = (
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          color="primary"
+          onClick={this.props.handleJoinActivity(activity.id)}
+        >
           Join Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </Button>
       );

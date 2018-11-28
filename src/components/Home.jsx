@@ -5,22 +5,15 @@ import { db, firebase } from "../firebase";
 
 import CreateActivity from "./CreateActivity";
 import ActivityCardStyled from "./ActivityCard";
+import ArticleCardStyled from "./ArticleCard";
 import Grid from "@material-ui/core/Grid";
 import { Divider } from "@material-ui/core";
-
-import sportsLogo from "./img/sports/1.jpg";
 
 import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -72,7 +65,7 @@ const styles = theme => ({
 });
 
 const ActivitiesGridList = props => {
-  const { classes, tileData, joined } = props;
+  const { classes, tileData, joined, handleJoinActivity } = props;
 
   return (
     <div className={classes.root}>
@@ -87,7 +80,12 @@ const ActivitiesGridList = props => {
               width: "300px"
             }}
           >
-            <ActivityCardStyled activity={tileData[key]} joined={joined} />
+            <ActivityCardStyled
+              key={key}
+              activity={tileData[key]}
+              joined={joined}
+              handleJoinActivity={handleJoinActivity}
+            />
           </GridListTile>
         ))}
       </GridList>
@@ -96,6 +94,32 @@ const ActivitiesGridList = props => {
 };
 
 const ActivitiesGridListStyled = withStyles(styles)(ActivitiesGridList);
+
+const ArticlesGridList = props => {
+  const { classes, tileData } = props;
+
+  return (
+    <div className={classes.root}>
+      <GridList className={classes.gridList} cols={4}>
+        {Object.keys(tileData).map(key => (
+          <GridListTile
+            key={key}
+            style={{
+              height: "320px",
+              margin: "10px",
+              marginTop: "0px",
+              width: "300px"
+            }}
+          >
+            <ArticleCardStyled article={tileData[key]} />
+          </GridListTile>
+        ))}
+      </GridList>
+    </div>
+  );
+};
+
+const ArticlesGridListStyled = withStyles(styles)(ArticlesGridList);
 
 class HomePage extends Component {
   constructor(props) {
@@ -145,14 +169,53 @@ class HomePage extends Component {
 
     window.location.reload();
   };
+  handleJoinActivity = aid => {
+    db.onceGetUser(this.state.uid).then(snapshot => {
+      // get the latest user data
+      let temp = snapshot.val();
+      // if the activity id already in user data, don't update
+      if (temp.activities == null) temp.activities = [];
+      if (temp.activities.includes(aid)) return;
+      // get data of the activity
+      db.onceGetActivity(aid).then(snapshot2 => {
+        let tmp = snapshot2.val();
+        // push the user id into activity members
+        tmp.members.push(this.state.userData.email);
+        // update the database
+        db.doJoinActivity(aid, tmp.members);
+      });
+      // update the database
+      db.doAddActivity(this.state.uid, aid);
+      // update local
+      db.onceGetUser(this.state.uid).then(snapshot => {
+        this.setState({ userData: snapshot.val() });
+      });
+      db.onceGetActivities().then(snapshot => {
+        let tmp = snapshot.val();
+        if (tmp == null) tmp = {};
+        this.setState({ activities: tmp });
+      });
+    });
+  };
   render() {
     let tileData = [];
+    let tileData2 = [];
     let tmpUse = this.state.userData;
+    if (tmpUse.activities == null) tmpUse.activities = [];
     let tmpAct = this.state.activities;
     if (tmpAct) {
       Object.keys(tmpAct).forEach(function(key) {
-        if (tmpUse.activities != null && tmpUse.activities.includes(key)) {
+        if (
+          tmpUse.activities.includes(key) &&
+          tmpAct[key].time >= new Date().getTime()
+        ) {
           tileData.push(tmpAct[key]);
+        }
+        if (
+          !tmpUse.activities.includes(key) &&
+          tmpAct[key].time >= new Date().getTime()
+        ) {
+          tileData2.push(tmpAct[key]);
         }
       });
     }
@@ -229,65 +292,69 @@ class HomePage extends Component {
           <Grid item xs={12}>
             <ActivitiesGridListStyled
               joined={false}
+              tileData={tileData2}
+              handleJoinActivity={this.handleJoinActivity}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item xs={12}>
+            <h3>Some articles related to health</h3>
+          </Grid>
+          <Grid item xs={12}>
+            <ArticlesGridListStyled
               tileData={{
-                "123": {
-                  name: "badminton",
-                  place: "fsktm",
-                  time: "123123",
-                  host: "me",
-                  members: ["sad", "dsd"]
+                "0": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
                 },
-                "1234": {
-                  name: "badmintons",
-                  place: "fsktm",
-                  time: "123123",
-                  host: "me",
-                  members: ["sad", "dsd"]
+                "01": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
                 },
-                "1231": {
-                  name: "badminton",
-                  place: "fsktm",
-                  time: "123123",
-                  host: "me",
-                  members: ["sad", "dsd"]
+                "02": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
                 },
-                "1232": {
-                  name: "badmintons",
-                  place: "fsktm",
-                  time: "123123",
-                  host: "me",
-                  members: ["sad", "dsd"]
+                "03": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
                 },
-                "12312": {
-                  name: "badminton",
-                  place: "fsktm",
-                  time: "123123",
-                  host: "me",
-                  members: ["sad", "dsd"]
+                "04": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
                 },
-                "12323": {
-                  name: "badmintons",
-                  place: "fsktm",
-                  time: "123123",
-                  host: "me",
-                  members: ["sad", "dsd"]
+                "05": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
                 },
-                "123133": {
-                  name: "badminton",
-                  place: "fsktm",
-                  time: "123123",
-                  host: "me",
-                  members: ["sad", "dsd"]
+                "06": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
                 },
-                "123233": {
-                  name: "badmintons",
-                  place: "fsktm",
-                  time: "123123",
-                  host: "me",
-                  members: ["sad", "dsd"]
+                "07": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
+                },
+                "08": {
+                  title: "Hello World",
+                  desc: "Hello its me hellooooooooo",
+                  url: "https://www.google.com/"
                 }
               }}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
           </Grid>
         </Grid>
       </div>

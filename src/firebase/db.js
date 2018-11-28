@@ -15,9 +15,9 @@ export const onceGetUser = id => db.ref(`users/${id}`).once("value");
 
 export const onceGetActivities = () => db.ref("activities").once("value");
 
-const onceGetActivity = aid => db.ref(`activities/${aid}`).once("value");
+export const onceGetActivity = aid => db.ref(`activities/${aid}`).once("value");
 
-const doAddActivity = (id, aid) => {
+export const doAddActivity = (id, aid) => {
   db.ref(`users/${id}`)
     .once("value")
     .then(snapshot => {
@@ -26,6 +26,10 @@ const doAddActivity = (id, aid) => {
       tmp.push(aid);
       db.ref(`users/${id}/activities`).set(tmp);
     });
+};
+
+export const doJoinActivity = (aid, members) => {
+  db.ref(`activities/${aid}/members`).set(members);
 };
 
 export const doCreateActivity = (name, place, time, host, id, members) => {
