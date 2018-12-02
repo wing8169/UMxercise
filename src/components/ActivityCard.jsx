@@ -138,7 +138,11 @@ class ActivityCard extends Component {
     let button;
     if (joined)
       button = (
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => window.open(activity.url, "_blank")}
+        >
           Enter Chatroom
         </Button>
       );

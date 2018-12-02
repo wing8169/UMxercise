@@ -11,7 +11,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 const INITIAL_STATE = {
   name: "",
   place: "",
-  time: ""
+  time: "",
+  url: ""
 };
 
 const byPropKey = (propertyName, value) => () => ({
@@ -25,9 +26,9 @@ export default class CreateActivity extends Component {
   }
 
   render() {
-    const { name, place, time } = this.state;
+    const { name, place, time, url } = this.state;
 
-    const isInvalid = name === "" || place === "" || time === "";
+    const isInvalid = name === "" || place === "" || time === "" || url === "";
 
     return (
       <div style={{ textAlign: "center", marginTop: 13 }}>
@@ -66,6 +67,14 @@ export default class CreateActivity extends Component {
               }}
               label="Date and time"
             />
+            <TextField
+              type="text"
+              style={{ marginTop: 15 }}
+              fullWidth
+              value={url}
+              onChange={event => this.setState({ url: event.target.value })}
+              placeholder="URL to WhatsApp Group"
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.props.handleClose} color="primary">
@@ -77,7 +86,8 @@ export default class CreateActivity extends Component {
                 this.props.createActivity(
                   this.state.name,
                   this.state.place,
-                  this.state.time
+                  this.state.time,
+                  this.state.url
                 )
               }
               color="primary"

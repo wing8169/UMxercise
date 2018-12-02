@@ -17,32 +17,49 @@ export const onceGetActivities = () => db.ref("activities").once("value");
 
 export const onceGetActivity = aid => db.ref(`activities/${aid}`).once("value");
 
-export const doAddActivity = (id, aid) => {
+export const doAddActivity = (id, aid, callback) => {
   db.ref(`users/${id}`)
     .once("value")
     .then(snapshot => {
       let tmp = snapshot.val().activities;
       if (tmp == null) tmp = [];
       tmp.push(aid);
-      db.ref(`users/${id}/activities`).set(tmp);
+      db.ref(`users/${id}/activities`)
+        .set(tmp)
+        .then(() => callback());
     });
 };
 
-export const doJoinActivity = (aid, members) => {
-  db.ref(`activities/${aid}/members`).set(members);
+export const doJoinActivity = (aid, members, callback) => {
+  db.ref(`activities/${aid}/members`)
+    .set(members)
+    .then(() => callback());
 };
 
-export const doCreateActivity = (name, place, time, host, id, members) => {
+export const doCreateActivity = (
+  name,
+  place,
+  time,
+  url,
+  host,
+  id,
+  members,
+  callback
+) => {
   let tmpRef = db.ref("activities").push();
-  tmpRef.set({
-    id: tmpRef.key,
-    name: name,
-    place: place,
-    time: time,
-    host: host,
-    members: members
-  });
-  doAddActivity(id, tmpRef.key);
+  tmpRef
+    .set({
+      id: tmpRef.key,
+      name: name,
+      place: place,
+      url: url,
+      time: time,
+      host: host,
+      members: members
+    })
+    .then(() => {
+      doAddActivity(id, tmpRef.key, callback);
+    });
 };
 
 export const onceGetJoinedActivites = uid => {

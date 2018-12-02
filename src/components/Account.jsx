@@ -26,7 +26,8 @@ class AccountPage extends Component {
       <AuthUserContext.Consumer>
         {authUser => (
           <div style={{ margin: "75px", marginTop: "10px" }}>
-            <h5>{authUser.email}</h5>
+            <h5>Email: {authUser.email}</h5>
+            <h5>User Name: {this.state.userData.username}</h5>
             <img
               src={profile}
               alt="profile"
